@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import CSVParser from "../utilities/csv-parser"
 import ObjectZipper from "../utilities/object-zipper"
 import Flashcard from "../components/flashcard"
+import { numberOfFakeCards} from "../utilities/constants"
 
 const dataEndpoint = "http://take-home-wildlife.s3-website-us-west-2.amazonaws.com/data.csv"
 
@@ -25,9 +26,12 @@ const Home = ()=>{
     },[])
     return (
         <div className="main-page">
+            <div className="home-title absolute">
+                Wildlife Flashcard
+            </div>
             <div className="stack m-2 relative flex">
             {
-                [...Array(12).keys()].map((_, k)=>{
+                [...Array(numberOfFakeCards).keys()].map((_, k)=>{
                     let rotationStyle = `rotateZ(0deg)`
                     const isRotated = isRotatedArr[k]
                     const rotationDirection = rotationDirectionArr[k]

@@ -1,9 +1,13 @@
 //Preload images config
-export const preloadImagesNumber = 5
+export const preloadImagesNumber = 5 //images
 
-export const maxDragDistance = 70
+export const maxDragDistance = 70 //%
 
-export const cardOpacityOffset = 150
+export const cardOpacityOffset = 150 //%
+
+export const touchTimeThreshold = 150 //ms
+
+export const numberOfFakeCards = 12 //cards
 
 //For future implementations
 export const colors = {
