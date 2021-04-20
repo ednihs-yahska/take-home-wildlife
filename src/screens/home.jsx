@@ -9,6 +9,7 @@ const Home = ()=>{
     const [wildlifeData, setWildlifeData] = useState([])
     const [isRotatedArr, setRotatedArray] = useState([])
     const [rotationDirectionArr, setRotationDirectionArr] = useState([])
+    const [top, setTop] = useState(0)
 
     useEffect(()=>{
         fetch(dataEndpoint).then(response=>response.text()).then((textResult)=>{
@@ -43,7 +44,7 @@ const Home = ()=>{
                     return <Flashcard card={null} styles={styles} classes={``} key={k}/>
                 })
             }
-            <Flashcard card={null} classes={`relative`}/>
+            <Flashcard card={wildlifeData[top]} classes={`relative`}/>
             </div>
         </div>
     )
