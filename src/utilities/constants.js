@@ -3,7 +3,7 @@ export const preloadImagesNumber = 5 //images
 
 export const maxDragDistance = 70 //%
 
-export const cardOpacityOffset = 150 //%
+export const cardOpacityOffset = 120 //%
 
 export const touchTimeThreshold = 150 //ms
 

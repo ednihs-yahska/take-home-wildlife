@@ -2,15 +2,41 @@ import React, { useEffect, useState } from "react";
 import CSVParser from "../utilities/csv-parser"
 import ObjectZipper from "../utilities/object-zipper"
 import Flashcard from "../components/flashcard"
-import { numberOfFakeCards} from "../utilities/constants"
+import { numberOfFakeCards, cardOpacityOffset, maxDragDistance} from "../utilities/constants"
 
 const dataEndpoint = "http://take-home-wildlife.s3-website-us-west-2.amazonaws.com/data.csv"
 
+const onDrag=(e, touch, tictac, setDrag)=>{
+    if (!tictac) return
+    const centerX = window.innerWidth / 2;
+    const diff = touch - centerX
+    //TODO: remove "magic numbers"
+    setDrag(Math.max(-90, Math.min((diff/4), 80)))
+}
+
+const clearDrag=(drag, setDrag, putCardBack, postDrag, tictac, setTicTac)=>{
+    setDrag(0)
+    if (Math.abs(drag) > 70) {
+        putCardBack()
+        postDrag()
+        setTicTac(!tictac)
+    }
+}
 const Home = ()=>{
     const [wildlifeData, setWildlifeData] = useState([])
     const [isRotatedArr, setRotatedArray] = useState([])
     const [rotationDirectionArr, setRotationDirectionArr] = useState([])
     const [top, setTop] = useState(0)
+    const [drag1, setDrag1] = useState(0)
+    const [drag2, setDrag2] = useState(0)
+    const [tictac, setTicTac] = useState(true)
+    const [second, setSecond] = useState(1)
+    const [dragDirectionX, setDragDirectionX] = useState(true) // True=X False=Y
+
+    const putCardBack = ()=>{
+        setRotatedArray([...Array(12).keys()].map(()=>Math.floor(Math.random() * 10)))
+        setRotationDirectionArr([...Array(12).keys()].map(()=>Math.floor(Math.random() * 10)))
+    }
 
     useEffect(()=>{
         fetch(dataEndpoint).then(response=>response.text()).then((textResult)=>{
@@ -24,6 +50,7 @@ const Home = ()=>{
         setRotatedArray([...Array(12).keys()].map(()=>Math.floor(Math.random() * 10)))
         setRotationDirectionArr([...Array(12).keys()].map(()=>Math.floor(Math.random() * 10)))
     },[])
+
     return (
         <div className="main-page">
             <div className="home-title absolute">
@@ -45,10 +72,41 @@ const Home = ()=>{
                     const styles = { 
                         transform: `translateY(${-k*2}px) ${rotationStyle}` 
                     };
-                    return <Flashcard card={null} styles={styles} classes={``} key={k}/>
+                    return <Flashcard card={null} styles={styles} classes={``} key={k} stacked={true}/>
                 })
             }
-            <Flashcard card={wildlifeData[top]} classes={`relative`}/>
+                <Flashcard styles={{
+                    transform:`translateX(${drag2}%) rotateZ(${15*((drag2)/100)}deg)`,
+                    opacity: `${Math.max(cardOpacityOffset-Math.abs(drag2), 10)}%`
+                }}
+                onDrag={(e, touch)=>onDrag(e, touch, !tictac, setDrag2)}
+                clearDrag={(postDrag)=>{
+                    clearDrag(drag2, setDrag2, putCardBack, postDrag, tictac, setTicTac)
+                    if(drag2>maxDragDistance){
+                        setSecond((top+1)%wildlifeData.length)
+                    }
+                }}
+                card={wildlifeData[second]}
+                stacked = {tictac}
+                classes={`${Math.abs(drag2)<70 && "top-card"} ${Math.abs(drag2)>=70 && "bottom-card"} ${tictac && "absolute"} ${!tictac && "relative"}`}
+                />
+
+                <Flashcard styles={{
+                        transform:`translateX(${drag1}%) rotateZ(${15*((drag1)/100)}deg)`,
+                        top:"0%",
+                        opacity: `${Math.max(cardOpacityOffset-Math.abs(drag1), 10)}%`
+                    }}
+                onDrag={(e, touch)=>onDrag(e, touch, tictac, setDrag1)}
+                clearDrag={(postDrag)=>{
+                    clearDrag(drag1, setDrag1, putCardBack, postDrag, tictac, setTicTac)
+                    if(drag1>maxDragDistance) {
+                        setTop((second+1)%wildlifeData.length)
+                    }
+                }}
+                card={wildlifeData[top]}
+                stacked = {!tictac}
+                classes={`${(Math.abs(drag1)<70 && tictac) && "top-card"} ${Math.abs(drag1)>=70 && "bottom-card"} ${!tictac && "absolute"} ${tictac && "relative"}`}
+                />
             </div>
         </div>
     )
