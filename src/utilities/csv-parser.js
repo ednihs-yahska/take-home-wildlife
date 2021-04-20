@@ -16,7 +16,7 @@ class CSVParser {
             }
             if (letter==="\n" && !quoteStarted) {
                 if (previousLetter === "\r") {
-                    lineSymbols = lineSymbols.slice(0, -1)
+                    currentField = currentField.slice(0, -1)
                 }
                 lineSymbols.push(currentField.join("").trim())
                 lines.push(lineSymbols)
