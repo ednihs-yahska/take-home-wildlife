@@ -18,6 +18,7 @@ const Home = ()=>{
             const data = objectZipper.zip(dataLines[0], dataLines.slice(1))
             setWildlifeData(data)
         })
+        //TODO: remove magic numbers
         setRotatedArray([...Array(12).keys()].map(()=>Math.floor(Math.random() * 10)))
         setRotationDirectionArr([...Array(12).keys()].map(()=>Math.floor(Math.random() * 10)))
     },[])
