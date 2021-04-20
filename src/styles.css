@@ -14,3 +14,96 @@
     align-items: center;
     flex-direction: column;
 }
+
+.stack {
+    position: relative;
+}
+
+.m-2 {
+    margin: 0.5rem;
+}
+
+.p-2 {
+    padding: 0.5rem;
+}
+
+.mx-2 {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.border {
+    border: 1px solid #222;
+}
+
+.border-white {
+    border-color: white;
+}
+
+.border-thick {
+    border-width: 3px;
+}
+
+.rounded {
+    border-radius: 50%;
+}
+
+.rounded-sm{
+    border-radius: 5px;
+}
+
+.front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+}
+
+.front {
+
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.card-container {
+    position: absolute;
+    width: 500px;
+    height: 400px;
+}
+
+.bg-almond {
+    background: #FEDC97;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.relative {
+    position: relative;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}

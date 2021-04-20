@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CSVParser from "../utilities/csv-parser"
 import ObjectZipper from "../utilities/object-zipper"
+import Flashcard from "../components/flashcard"
 
 const dataEndpoint = "http://take-home-wildlife.s3-website-us-west-2.amazonaws.com/data.csv"
 
@@ -14,12 +15,22 @@ const Home = ()=>{
             const objectZipper = new ObjectZipper()
             const data = objectZipper.zip(dataLines[0], dataLines.slice(1))
             setWildlifeData(data)
-            console.log(data)
+
         })
     },[])
     return (
         <div className="main-page">
-            Flashcard App
+            <div className="stack m-2 relative flex">
+            {
+                [...Array(12).keys()].map((_, k)=>{
+                    const styles = { 
+                        transform: `translateY(${-k*2}px)` 
+                    };
+                    return <Flashcard card={null} styles={styles} classes={``} key={k}/>
+                })
+            }
+            <Flashcard card={null} classes={`relative`}/>
+            </div>
         </div>
     )
 }
