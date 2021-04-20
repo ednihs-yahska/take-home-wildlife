@@ -9,6 +9,13 @@ export const touchTimeThreshold = 150 //ms
 
 export const numberOfFakeCards = 12 //cards
 
+export const infoFontSizeMap = [...Array(30).keys()].map(v=>{
+    if (v<=24) return "2rem"
+    if (v<=30) return "1rem"
+    return "0.8rem"
+})
+
+
 //For future implementations
 export const colors = {
     "FFD166": {"default":"FFD166", "Protanopia": "EBEA7F"},

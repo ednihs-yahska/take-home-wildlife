@@ -50,8 +50,8 @@ const Flashcard = ({card, styles, classes,  stacked=false}) => {
                 onTouchUp(e, stacked, flippedOnce, setFlippedOnce, mouseDownStart, setMouseDownStart, flipped, setFlipped)
             }}
         >
-            <div className={`card rounded-sm border ${(!stacked && flipped) && "flipped"} ${(!stacked && !flipped && !flippedOnce) && "face-down"} ${(!stacked && !flipped && flippedOnce) && "unflipped"}`}>
-                <div className={`front bg-almond`}>
+            <div className={`card rounded-sm border border-thick border-white ${(!stacked && flipped) && "flipped"} ${(!stacked && !flipped && !flippedOnce) && "face-down"} ${(!stacked && !flipped && flippedOnce) && "unflipped"}`}>
+                <div className={`front bg-almond card-image-side`}>
                     {
                         card &&
                         <CardFace type="front" cardData={card} />

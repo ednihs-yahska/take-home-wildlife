@@ -47,6 +47,10 @@
     margin-right: 0.5rem;
 }
 
+.ml-auto {
+    margin-left: auto;
+}
+
 .border {
     border: 1px solid #222;
 }
@@ -56,7 +60,7 @@
 }
 
 .border-thick {
-    border-width: 3px;
+    border-width: 5px;
 }
 
 .rounded {
@@ -85,18 +89,26 @@
 
 .back {
     transform: rotateY(180deg);
+    
 }
 
 .card {
     position: relative;
     width: 100%;
     height: 100%;
+    background-color: #FFD166;
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
 }
 
 .card-container {
     position: absolute;
     width: 500px;
     height: 400px;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+    -moz-perspective: 1000px;
 }
 
 .card-image-container, .card-info-container, .card-side {
@@ -105,13 +117,20 @@
     width: 100%;
     height: 100%;
     color: #222;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+}
+
+.card-info-container {
+    background-color: #FFD166;
+    opacity: 1;
+    background-size: 60px 60px;
+    background-image:  repeating-linear-gradient(0deg, #444cf7, #444cf7 2px, #FFD166 2px, #FFD166);
 }
 
 .card-back-side {
-    background-color: #FFD166;
-    opacity: 1;
-    background-size: 40px 40px;
-    background-image:  repeating-linear-gradient(0deg, #444cf7, #444cf7 2px, #e5e5f7 2px, #e5e5f7);
+
 }
 
 .card-image {
@@ -133,6 +152,15 @@
 
 .card-container .card.face-down {
     animation: cardUnFlip 0 backwards linear;
+}
+
+.info-row {
+    font-size: 2rem;
+    margin: 12px;
+}
+
+.info-value::first-letter {
+    text-transform: capitalize;
 }
 
 @keyframes cardFlip {
