@@ -31,4 +31,4 @@ class CSVParser {
     }
 }
 
-export default CSVParser
+module.exports = CSVParser
