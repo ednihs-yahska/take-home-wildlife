@@ -3,6 +3,7 @@ import CSVParser from "../utilities/csv-parser"
 import ObjectZipper from "../utilities/object-zipper"
 import ImageLoader from  "../utilities/image-loader"
 import Flashcard from "../components/flashcard"
+import Controls from "../components/controls"
 import { numberOfFakeCards, cardOpacityOffset, maxDragDistance, preloadImagesNumber} from "../utilities/constants"
 import {DragDirectionContext} from "../contexts"
 
@@ -38,6 +39,7 @@ const Home = ()=>{
     const [second, setSecond] = useState(1)
     const [dragDirectionX, setDragDirectionX] = useState(true) // True=X False=Y
     const [xOrY, setXOrY] = useState("X")
+    const [topKeyFlipped, setTopKeyFlipped] = useState(false)
 
     const putCardBack = ()=>{
         setRotatedArray([...Array(12).keys()].map(()=>Math.floor(Math.random() * 10)))
@@ -95,7 +97,7 @@ const Home = ()=>{
                 setXOrY("Y")
             }
         });
-    })
+    },[])
     return (
         <DragDirectionContext.Provider value={{dragX: dragDirectionX}}>
             <div className="main-page">
@@ -134,6 +136,8 @@ const Home = ()=>{
                     }}
                     card={wildlifeData[second]}
                     stacked = {tictac}
+                    flipped = {topKeyFlipped}
+                    setFlipped = {setTopKeyFlipped}
                     classes={`${Math.abs(drag2)<70 && "top-card"} ${Math.abs(drag2)>=70 && "bottom-card"} ${tictac && "absolute"} ${!tictac && "relative"}`}
                     />
 
@@ -151,9 +155,21 @@ const Home = ()=>{
                     }}
                     card={wildlifeData[top]}
                     stacked = {!tictac}
+                    flipped = {topKeyFlipped}
+                    setFlipped = {setTopKeyFlipped}
                     classes={`${(Math.abs(drag1)<70 && tictac) && "top-card"} ${Math.abs(drag1)>=70 && "bottom-card"} ${!tictac && "absolute"} ${tictac && "relative"}`}
                     />
                 </div>
+                <Controls handleFlip={()=>setTopKeyFlipped(!topKeyFlipped)} 
+                handleLeftDrag={()=>{
+                    setTop((top+1)%wildlifeData.length)
+                    setSecond((second+1)%wildlifeData.length)
+                    setTopKeyFlipped(false)
+                }} handleRightDrag={()=>{
+                    setTop((top+1)%wildlifeData.length)
+                    setSecond((second+1)%wildlifeData.length)
+                    setTopKeyFlipped(false)
+                }}/>
             </div>
         </DragDirectionContext.Provider>
     )

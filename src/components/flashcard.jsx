@@ -75,13 +75,13 @@ const onTouchUp = (e, stacked, flippedOnce, setFlippedOnce, mouseDownStart, setM
     e.preventDefault()
 }
 
-const Flashcard = ({card, styles, classes, onDrag, clearDrag, stacked=false}) => {
+const Flashcard = ({card, styles, classes, onDrag, clearDrag, flipped, setFlipped, stacked=false}) => {
     const [mouseDownStart, setMouseDownStart] = useState(null)
     const [flippedOnce, setFlippedOnce] = useState(false)
-    const [flipped, setFlipped] = useState(false)
+    // const [flipped, setFlipped] = useState(false)
     const [dragging, setDragging] = useState(false)
     const [dragStartX, setDragStartX] = useState(null)
-    
+
     return (
         <DragDirectionContext.Consumer>
         {(dragDirection) => (

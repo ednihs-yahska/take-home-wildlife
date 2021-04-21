@@ -215,6 +215,13 @@ screen and (min-device-height : 320px) and (max-device-height : 480px)
     
 }
 
+.controls {
+    right: 10px;
+    bottom: 10px;
+    cursor: pointer;
+    background: #222;
+}
+
 /*Stretch TODO: add css variables*/
 .credit {
     position: absolute;
@@ -226,6 +233,10 @@ screen and (min-device-height : 320px) and (max-device-height : 480px)
 
 .bg-almond {
     background: #FFD166;
+}
+
+.text-white {
+    color: white;
 }
 
 .absolute {
