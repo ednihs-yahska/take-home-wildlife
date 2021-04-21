@@ -112,7 +112,6 @@
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: #FFD166;
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
@@ -127,25 +126,48 @@
     -moz-perspective: 1000px;
 }
 
-@media only screen and (min-device-width : 500px) and (max-device-width : 800),
+.swipe-instruction {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.wide-instruction {
+   top: 50%;
+}
+
+.narrow-instruction {
+    left: 50%;
+}
+
+.left-instruction {
+    transform: translate(-110%, 0);
+}
+
+.right-instruction {
+    transform: translate(510px, -50%);
+}
+
+.top-instruction {
+    transform: translate(-50%, -55px);
+}
+
+.bottom-instruction {
+    transform: translate(-50%, 410px);
+}
+
+@media only screen and (min-device-width : 500px) and (max-device-width : 800px),
 screen and (min-device-height : 320px) and (max-device-height : 480px)
 {
     .card-container {
         width: 300px;
         height: 240px;
     }
-}
-
-
-.card-image-container, .card-info-container, .card-side {
-    display: flex;
-    position: relative;
-    width: 100%;
-    height: 100%;
-    color: #222;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
+    .right-instruction {
+        transform: translate(310px, -50%);
+    }
+    .bottom-instruction {
+        transform: translate(-50%, 250px);
+    }
 }
 
 .card-info-container {
@@ -178,6 +200,17 @@ screen and (min-device-height : 320px) and (max-device-height : 480px)
 
 .card-container .card.face-down {
     animation: cardUnFlip 0 backwards linear;
+}
+
+.card-image, .card-image-container, .card-info-container, .card-side {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    color: #222;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
 }
 
 .info-row {
@@ -220,6 +253,44 @@ screen and (min-device-height : 320px) and (max-device-height : 480px)
     bottom: 10px;
     cursor: pointer;
     background: #222;
+    height: 4rem;
+    font-size: 3rem;
+}
+
+.control {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.instructions {
+    position: absolute;
+    top: 50px;
+    left: 0.5rem;
+    color: #fff;
+}
+
+@media only screen and (max-width : 1000px)
+{
+    .instructions {
+       font-size: 2rem;
+    }
+
+    .controls {
+        transform: translateX(-50%);
+        left: 50%;
+        font-size: 3rem;
+        height: 5rem;
+    }
+
+    .md-w-11-12 {
+        width: 91.63%
+    }
+
+    .md-mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 /*Stretch TODO: add css variables*/

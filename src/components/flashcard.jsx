@@ -104,14 +104,14 @@ const Flashcard = ({card, styles, classes, onDrag, clearDrag, flipped, setFlippe
                 }}
                 onMouseMove={(e)=>onDragging(e, dragging, dragDirection, onDrag)} onTouchMove={(e)=>onDragging(e, dragging, dragDirection, onDrag)}
             >
-                <div className={`card rounded-sm border border-thick border-white ${(!stacked && flipped) && "flipped"} ${(!stacked && !flipped && !flippedOnce) && "face-down"} ${(!stacked && !flipped && flippedOnce) && "unflipped"}`}>
-                    <div className={`front bg-almond card-image-side`}>
+                <div className={`card rounded-sm ${(!stacked && flipped) && "flipped"} ${(!stacked && !flipped && !flippedOnce) && "face-down"} ${(!stacked && !flipped && flippedOnce) && "unflipped"}`}>
+                    <div className={`front border border-thick border-white bg-almond`}>
                         {
                             card &&
                             <CardFace type="front" cardData={card} />
                         }
                     </div>
-                    <div className={`back bg-almond`}>
+                    <div className={`back bg-almond border border-thick border-white`}>
                         {
                             card &&
                             <CardFace type="back" cardData={card} />

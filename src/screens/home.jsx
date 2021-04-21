@@ -4,7 +4,7 @@ import ObjectZipper from "../utilities/object-zipper"
 import ImageLoader from  "../utilities/image-loader"
 import Flashcard from "../components/flashcard"
 import Controls from "../components/controls"
-import { numberOfFakeCards, cardOpacityOffset, maxDragDistance, preloadImagesNumber} from "../utilities/constants"
+import { numberOfFakeCards, cardOpacityOffset, maxDragDistance, dragThreshold, preloadImagesNumber} from "../utilities/constants"
 import {DragDirectionContext} from "../contexts"
 
 
@@ -17,12 +17,12 @@ const onDrag=(e, dragDirectionX, touch, tictac, setDrag)=>{
     const centerX = dragDirectionX? window.innerWidth / 2 : window.innerHeight / 2;
     const diff = touch - centerX
     //TODO: remove "magic numbers"
-    setDrag(Math.max(-90, Math.min((diff/4), 80)))
+    setDrag(Math.max(-dragThreshold, Math.min((diff/4), dragThreshold)))
 }
 
 const clearDrag=(drag, setDrag, putCardBack, postDrag, tictac, setTicTac)=>{
     setDrag(0)
-    if (Math.abs(drag) > 70) {
+    if (Math.abs(drag) > maxDragDistance) {
         putCardBack()
         postDrag()
         setTicTac(!tictac)
@@ -40,6 +40,8 @@ const Home = ()=>{
     const [dragDirectionX, setDragDirectionX] = useState(true) // True=X False=Y
     const [xOrY, setXOrY] = useState("X")
     const [topKeyFlipped, setTopKeyFlipped] = useState(false)
+    const [correct, setCorrect] = useState(0)
+    const [incorrect, setIncorrect] = useState(0)
 
     const putCardBack = ()=>{
         setRotatedArray([...Array(12).keys()].map(()=>Math.floor(Math.random() * 10)))
@@ -52,6 +54,7 @@ const Home = ()=>{
             const dataLines = csvParser.parse(textResult)
             const objectZipper = new ObjectZipper()
             const data = objectZipper.zip(dataLines[0], dataLines.slice(1))
+            console.log("Got Data ", data)
             setWildlifeData(data)
         })
         //TODO: remove magic numbers
@@ -71,6 +74,10 @@ const Home = ()=>{
 
     useEffect(()=>{
         imageLoader.loadImages(top, wildlifeData)
+        if (top==0){
+            setCorrect(0)
+            setIncorrect(0)
+        }
     }, [top, wildlifeData])
 
     useEffect(()=>{
@@ -102,27 +109,31 @@ const Home = ()=>{
         <DragDirectionContext.Provider value={{dragX: dragDirectionX}}>
             <div className="main-page">
                 <div className="home-title absolute">
-                    Wildlife Flashcard
+                    <span>Wildlife Flashcard</span>
+                </div>
+                <div className="instructions">
+                    <span className="mx-2">[Controls:</span>
+                    <span className="mx-2">Click/Swipe cards or use controls below]</span>
                 </div>
                 <div className="stack m-2 relative flex">
-                {
-                    [...Array(numberOfFakeCards).keys()].map((_, k)=>{
-                        let rotationStyle = `rotateZ(0deg)`
-                        const isRotated = isRotatedArr[k]
-                        const rotationDirection = rotationDirectionArr[k]
-                        if (isRotated < 5) {
-                            if(rotationDirection > 5) {
-                                rotationStyle = `rotateZ(-2deg)`
-                            } else {
-                                rotationStyle = `rotateZ(2deg)`
+                    {
+                        [...Array(numberOfFakeCards).keys()].map((_, k)=>{
+                            let rotationStyle = `rotateZ(0deg)`
+                            const isRotated = isRotatedArr[k]
+                            const rotationDirection = rotationDirectionArr[k]
+                            if (isRotated < 5) {
+                                if(rotationDirection > 5) {
+                                    rotationStyle = `rotateZ(-2deg)`
+                                } else {
+                                    rotationStyle = `rotateZ(2deg)`
+                                }
                             }
-                        }
-                        const styles = { 
-                            transform: `translateY(${-k*2}px) ${rotationStyle}` 
-                        };
-                        return <Flashcard card={null} styles={styles} classes={``} key={k} stacked={true}/>
-                    })
-                }
+                            const styles = { 
+                                transform: `translateY(${-k*2}px) ${rotationStyle}` 
+                            };
+                            return <Flashcard card={null} styles={styles} classes={``} key={k} stacked={true}/>
+                        })
+                    }
                     <Flashcard styles={{
                         transform:`translate${xOrY}(${drag2}%) rotateZ(${15*((drag2)/100)}deg)`,
                         opacity: `${Math.max(cardOpacityOffset-Math.abs(drag2), 10)}%`
@@ -157,10 +168,10 @@ const Home = ()=>{
                     stacked = {!tictac}
                     flipped = {topKeyFlipped}
                     setFlipped = {setTopKeyFlipped}
-                    classes={`${(Math.abs(drag1)<70 && tictac) && "top-card"} ${Math.abs(drag1)>=70 && "bottom-card"} ${!tictac && "absolute"} ${tictac && "relative"}`}
+                    classes={`${(Math.abs(drag1)<maxDragDistance && tictac) && "top-card"} ${Math.abs(drag1)>=maxDragDistance && "bottom-card"} ${!tictac && "absolute"} ${tictac && "relative"}`}
                     />
                 </div>
-                <Controls handleFlip={()=>setTopKeyFlipped(!topKeyFlipped)} 
+                <Controls drag1={drag1} drag2={drag2} tictac={tictac} handleFlip={()=>setTopKeyFlipped(!topKeyFlipped)} 
                 handleLeftDrag={()=>{
                     setTop((top+1)%wildlifeData.length)
                     setSecond((second+1)%wildlifeData.length)
