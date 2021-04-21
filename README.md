@@ -1,5 +1,22 @@
 # Take Home Wildlife Project
 
+### Notes from Akshay
+* I have implemented a card interface where the students can click on the card to flip it, or drag the card right/down if they know the answer or drag the card left/top if they were wrong.
+* I preload 5 images into browser cache after every 5 cards are viewed for faster image loads.
+* I have provided simpler button controls at the bottom of the page as an alternative to dragging interaction for
+better accissibility
+* I have created a custom CSV parser and a simple testing library to very the CSVParser works as expected.
+The grammar for the CSV was referred from (https://tools.ietf.org/html/rfc4180)[RFC 4180] 
+* The website is responsive and tested on all virtual devices available on chrome debugger
+
+### Known issues
+* On Safari the flipped card still shows inverted credit element.
+
+### Future Scope
+* I wanted to map each card image to only one property of the animal as that is considered to be a good flashcard.
+* I would like to create flashcard from the animal properties to animal images (inverted)
+* Ability to create flashcards
+
 ### What we’d like you to build:
 
 For this demo project, we would like you to create a flash card app to display samples of wildlife species.
