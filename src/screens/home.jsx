@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import CSVParser from "../utilities/csv-parser"
 import ObjectZipper from "../utilities/object-zipper"
+import ImageLoader from  "../utilities/image-loader"
 import Flashcard from "../components/flashcard"
-import { numberOfFakeCards, cardOpacityOffset, maxDragDistance} from "../utilities/constants"
+import { numberOfFakeCards, cardOpacityOffset, maxDragDistance, preloadImagesNumber} from "../utilities/constants"
 import {DragDirectionContext} from "../contexts"
 
+
 const dataEndpoint = "http://take-home-wildlife.s3-website-us-west-2.amazonaws.com/data.csv"
+
+const imageLoader = new ImageLoader(preloadImagesNumber)
 
 const onDrag=(e, dragDirectionX, touch, tictac, setDrag)=>{
     if (!tictac) return
@@ -17,7 +21,6 @@ const onDrag=(e, dragDirectionX, touch, tictac, setDrag)=>{
 
 const clearDrag=(drag, setDrag, putCardBack, postDrag, tictac, setTicTac)=>{
     setDrag(0)
-    console.log(drag)
     if (Math.abs(drag) > 70) {
         putCardBack()
         postDrag()
@@ -58,14 +61,41 @@ const Home = ()=>{
         if (windowWidth >= windowHeight) {
             setDragDirectionX(true)
             setXOrY("X")
-            console.log("Set X")
         } else {
             setDragDirectionX(false)
             setXOrY("Y")
-            console.log("Set Y")
         }
     },[])
 
+    useEffect(()=>{
+        imageLoader.loadImages(top, wildlifeData)
+    }, [top, wildlifeData])
+
+    useEffect(()=>{
+        window.addEventListener("orientationchange", function(event) {
+            console.log("Orientation changed")
+            console.log("the orientation of the device is now " + event.target.screen.orientation.angle);
+            const angle = event.target.screen.orientation.angle
+            if (angle===90) {
+                setDragDirectionX(true)
+                setXOrY("X")
+            } else {
+                setDragDirectionX(false)
+                setXOrY("Y")
+            }
+        });
+        window.addEventListener("resize", function(event) {
+            const windowWidth = window.innerWidth
+            const windowHeight = window.innerHeight
+            if (windowWidth >= windowHeight) {
+                setDragDirectionX(true)
+                setXOrY("X")
+            } else {
+                setDragDirectionX(false)
+                setXOrY("Y")
+            }
+        });
+    })
     return (
         <DragDirectionContext.Provider value={{dragX: dragDirectionX}}>
             <div className="main-page">
