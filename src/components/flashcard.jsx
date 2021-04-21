@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CardFace from "./cardface"
 import { numberOfFakeCards, touchTimeThreshold} from "../utilities/constants"
+import {DragDirectionContext} from "../contexts"
 
 const getTouchX = (e) => {
     let touchX = e.pageX || e.clientX;
@@ -18,10 +19,10 @@ const getTouchY = (e) => {
     return touchY
 }
 
-const startDragging = (e, setDragging, setDragStartX, setMouseDownStart)=>{
+const startDragging = (e, dragDirection, setDragging, setDragStartX, setMouseDownStart)=>{
     setDragging(true); 
-    const touchX = getTouchX(e)
-    setDragStartX(touchX); 
+    const touch = dragDirection.dragX ? getTouchX(e) : getTouchY(e)
+    setDragStartX(touch); 
     setMouseDownStart(new Date().getTime())
     e.preventDefault()
     e.stopPropagation()
@@ -39,11 +40,10 @@ const stopDragging = (e, clearDrag, setDragging, mouseDownStart, setFlippedOnce,
     e.preventDefault()
     e.stopPropagation()
 }
-const onDragging = (e, dragging, onDrag, stacked)=>{
+const onDragging = (e, dragging, dragDirection, onDrag, stacked)=>{
     if (dragging && !stacked) {
-        const touchX = getTouchX(e)
-        console.log(touchX)
-        onDrag(e, touchX)
+        const touch = dragDirection.dragX ? getTouchX(e) : getTouchY(e)
+        onDrag(e, touch)
     }
     e.preventDefault()
     e.stopPropagation()
@@ -83,40 +83,44 @@ const Flashcard = ({card, styles, classes, onDrag, clearDrag, stacked=false}) =>
     const [dragStartX, setDragStartX] = useState(null)
     
     return (
-        <div style={styles} className={`${classes} card-container ${stacked && "stack-card"}`}
-            onMouseDown={(e)=>{
-                startDragging(e, setDragging, setDragStartX, setMouseDownStart)
-                onTouchDown(e, setMouseDownStart)
-            }}
-            onTouchStart={(e)=>{
-                startDragging(e, setDragging, setDragStartX, setMouseDownStart)
-                onTouchDown(e, setMouseDownStart)
-            }}
-            onMouseUp={(e)=>{
-                stopDragging(e, clearDrag, setDragging, mouseDownStart, setFlippedOnce, setFlipped)
-                onTouchUp(e, stacked, flippedOnce, setFlippedOnce, mouseDownStart, setMouseDownStart, flipped, setFlipped)
-            }}
-            onTouchEnd={(e)=>{
-                stopDragging(e, clearDrag, setDragging, mouseDownStart, setFlippedOnce, setFlipped)
-                onTouchUp(e, stacked, flippedOnce, setFlippedOnce, mouseDownStart, setMouseDownStart, flipped, setFlipped)
-            }}
-            onMouseMove={(e)=>onDragging(e, dragging, onDrag)} onTouchMove={(e)=>onDragging(e, dragging, onDrag)}
-        >
-            <div className={`card rounded-sm border border-thick border-white ${(!stacked && flipped) && "flipped"} ${(!stacked && !flipped && !flippedOnce) && "face-down"} ${(!stacked && !flipped && flippedOnce) && "unflipped"}`}>
-                <div className={`front bg-almond card-image-side`}>
-                    {
-                        card &&
-                        <CardFace type="front" cardData={card} />
-                    }
-                </div>
-                <div className={`back bg-almond`}>
-                    {
-                        card &&
-                        <CardFace type="back" cardData={card} />
-                    }
+        <DragDirectionContext.Consumer>
+        {(dragDirection) => (
+                <div style={styles} className={`${classes} card-container ${stacked && "stack-card"}`}
+                onMouseDown={(e)=>{
+                    startDragging(e, dragDirection, setDragging, setDragStartX, setMouseDownStart)
+                    onTouchDown(e, setMouseDownStart)
+                }}
+                onTouchStart={(e)=>{
+                    startDragging(e, dragDirection, setDragging, setDragStartX, setMouseDownStart)
+                    onTouchDown(e, setMouseDownStart)
+                }}
+                onMouseUp={(e)=>{
+                    stopDragging(e, clearDrag, setDragging, mouseDownStart, setFlippedOnce, setFlipped)
+                    onTouchUp(e, stacked, flippedOnce, setFlippedOnce, mouseDownStart, setMouseDownStart, flipped, setFlipped)
+                }}
+                onTouchEnd={(e)=>{
+                    stopDragging(e, clearDrag, setDragging, mouseDownStart, setFlippedOnce, setFlipped)
+                    onTouchUp(e, stacked, flippedOnce, setFlippedOnce, mouseDownStart, setMouseDownStart, flipped, setFlipped)
+                }}
+                onMouseMove={(e)=>onDragging(e, dragging, dragDirection, onDrag)} onTouchMove={(e)=>onDragging(e, dragging, dragDirection, onDrag)}
+            >
+                <div className={`card rounded-sm border border-thick border-white ${(!stacked && flipped) && "flipped"} ${(!stacked && !flipped && !flippedOnce) && "face-down"} ${(!stacked && !flipped && flippedOnce) && "unflipped"}`}>
+                    <div className={`front bg-almond card-image-side`}>
+                        {
+                            card &&
+                            <CardFace type="front" cardData={card} />
+                        }
+                    </div>
+                    <div className={`back bg-almond`}>
+                        {
+                            card &&
+                            <CardFace type="back" cardData={card} />
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
+        )}
+        </DragDirectionContext.Consumer>
     )
 }
 

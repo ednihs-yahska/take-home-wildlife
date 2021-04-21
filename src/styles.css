@@ -28,6 +28,7 @@
     align-items: center;
     flex-direction: column;
     background-color: #4D243D;
+    overflow: hidden;
 }
 
 .stack {
@@ -125,6 +126,21 @@
     -webkit-perspective: 1000px;
     -moz-perspective: 1000px;
 }
+
+@media screen and (max-width: 500px) and (min-width: 300px){
+    .card-container {
+        width: 200px;
+        height: 160px;
+    }
+}
+
+@media screen and (min-width: 1100px) {
+    .card-container {
+        width: 500px;
+        height: 400px;
+    }
+}
+
 
 .card-image-container, .card-info-container, .card-side {
     display: flex;
