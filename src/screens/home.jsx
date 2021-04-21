@@ -20,12 +20,17 @@ const onDrag=(e, dragDirectionX, touch, tictac, setDrag)=>{
     setDrag(Math.max(-dragThreshold, Math.min((diff/4), dragThreshold)))
 }
 
-const clearDrag=(drag, setDrag, putCardBack, postDrag, tictac, setTicTac)=>{
+const clearDrag=(drag, setDrag, putCardBack, postDrag, tictac, setTicTac, incorrect, setIncorrect, correct, setCorrect)=>{
     setDrag(0)
     if (Math.abs(drag) > maxDragDistance) {
         putCardBack()
         postDrag()
         setTicTac(!tictac)
+        if (drag < 0) {
+            setIncorrect(incorrect+1)
+        } else if (drag > 0) {
+            setCorrect(correct+1)
+        }
     }
 }
 const Home = ()=>{
@@ -74,12 +79,15 @@ const Home = ()=>{
 
     useEffect(()=>{
         imageLoader.loadImages(top, wildlifeData)
-        if (top==0){
+    }, [top, wildlifeData])
+
+    useEffect(()=>{
+        if(correct+incorrect == wildlifeData.length) {
+            console.log(correct+incorrect)
             setCorrect(0)
             setIncorrect(0)
         }
-    }, [top, wildlifeData])
-
+    }, [incorrect, correct])
     useEffect(()=>{
         window.addEventListener("orientationchange", function(event) {
             console.log("Orientation changed")
@@ -140,7 +148,7 @@ const Home = ()=>{
                     }}
                     onDrag={(e, touch)=>onDrag(e, dragDirectionX, touch, !tictac, setDrag2)}
                     clearDrag={(postDrag)=>{
-                        clearDrag(drag2, setDrag2, putCardBack, postDrag, tictac, setTicTac)
+                        clearDrag(drag2, setDrag2, putCardBack, postDrag, tictac, setTicTac, incorrect, setIncorrect, correct, setCorrect)
                         if(Math.abs(drag2)>maxDragDistance){
                             setSecond((top+1)%wildlifeData.length)
                         }
@@ -159,7 +167,7 @@ const Home = ()=>{
                         }}
                     onDrag={(e, touch)=>onDrag(e, dragDirectionX, touch, tictac, setDrag1)}
                     clearDrag={(postDrag)=>{
-                        clearDrag(drag1, setDrag1, putCardBack, postDrag, tictac, setTicTac)
+                        clearDrag(drag1, setDrag1, putCardBack, postDrag, tictac, setTicTac, incorrect, setIncorrect, correct, setCorrect)
                         if(Math.abs(drag1)>maxDragDistance) {
                             setTop((second+1)%wildlifeData.length)
                         }
@@ -171,7 +179,7 @@ const Home = ()=>{
                     classes={`${(Math.abs(drag1)<maxDragDistance && tictac) && "top-card"} ${Math.abs(drag1)>=maxDragDistance && "bottom-card"} ${!tictac && "absolute"} ${tictac && "relative"}`}
                     />
                 </div>
-                <Controls drag1={drag1} drag2={drag2} tictac={tictac} handleFlip={()=>setTopKeyFlipped(!topKeyFlipped)} 
+                <Controls correct={correct} incorrect={incorrect} drag1={drag1} drag2={drag2} tictac={tictac} handleFlip={()=>setTopKeyFlipped(!topKeyFlipped)} 
                 handleLeftDrag={()=>{
                     setTop((top+1)%wildlifeData.length)
                     setSecond((second+1)%wildlifeData.length)
