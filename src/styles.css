@@ -250,11 +250,12 @@ screen and (min-device-height : 320px) and (max-device-height : 480px)
 
 .controls {
     right: 10px;
-    bottom: 10px;
+    bottom: 20px;
     cursor: pointer;
     background: #222;
     height: 4rem;
     font-size: 3rem;
+    box-shadow: 0 0 5px #000;
 }
 
 .control {

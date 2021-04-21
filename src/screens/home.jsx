@@ -183,10 +183,12 @@ const Home = ()=>{
                 handleLeftDrag={()=>{
                     setTop((top+1)%wildlifeData.length)
                     setSecond((second+1)%wildlifeData.length)
+                    setIncorrect(incorrect+1)
                     setTopKeyFlipped(false)
                 }} handleRightDrag={()=>{
                     setTop((top+1)%wildlifeData.length)
                     setSecond((second+1)%wildlifeData.length)
+                    setCorrect(correct+1)
                     setTopKeyFlipped(false)
                 }}/>
             </div>
