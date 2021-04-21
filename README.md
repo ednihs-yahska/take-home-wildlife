@@ -6,7 +6,7 @@
 * I have provided simpler button controls at the bottom of the page as an alternative to dragging interaction for
 better accissibility
 * I have created a custom CSV parser and a simple testing library to very the CSVParser works as expected.
-The grammar for the CSV was referred from (https://tools.ietf.org/html/rfc4180)[RFC 4180] 
+The grammar for the CSV was referred from (https://tools.ietf.org/html/rfc4180) [RFC 4180] 
 * The website is responsive and tested on all virtual devices available on chrome debugger
 
 ### Known issues
