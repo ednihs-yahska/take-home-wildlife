@@ -9,9 +9,10 @@ better accessibility
 The grammar for the CSV was referred from (https://tools.ietf.org/html/rfc4180) [RFC 4180] 
 * The website is responsive and tested on all virtual devices available on chrome debugger (for screen sizes)
 * I have also tested on all the modern browsers except Internet Explorer/Edge.
+* The project is hosted here: http://ec2-35-162-94-1.us-west-2.compute.amazonaws.com/
 
 ### Known issues
-* On Safari the flipped card still shows inverted credit element.
+* On Safari and Mobile browsers the flipped card still shows inverted credit element.
 
 ### Future Scope
 * I wanted to map each card image to only one property of the animal as that is considered to be a good flashcard.
