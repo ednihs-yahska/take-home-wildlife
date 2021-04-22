@@ -5,7 +5,7 @@
 * I preload 5 images into browser cache after every 5 cards are viewed for faster image loads.
 * I have provided simpler button controls at the bottom of the page as an alternative to dragging interaction for
 better accessibility
-* I have created a custom CSV parser and a simple testing library to very the CSVParser works as expected.
+* I have created a custom CSV parser and a simple testing library to verify the CSVParser works as expected.
 The grammar for the CSV was referred from (https://tools.ietf.org/html/rfc4180) [RFC 4180] 
 * The website is responsive and tested on all virtual devices available on chrome debugger (for screen sizes)
 * I have also tested on all the modern browsers except Internet Explorer/Edge.
