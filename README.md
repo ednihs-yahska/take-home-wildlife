@@ -7,7 +7,8 @@
 better accessibility
 * I have created a custom CSV parser and a simple testing library to very the CSVParser works as expected.
 The grammar for the CSV was referred from (https://tools.ietf.org/html/rfc4180) [RFC 4180] 
-* The website is responsive and tested on all virtual devices available on chrome debugger
+* The website is responsive and tested on all virtual devices available on chrome debugger (for screen sizes)
+* I have also tested on all the modern browsers except Internet Explorer/Edge.
 
 ### Known issues
 * On Safari the flipped card still shows inverted credit element.
