@@ -9,7 +9,7 @@ better accessibility
 The grammar for the CSV was referred from (https://tools.ietf.org/html/rfc4180) [RFC 4180] 
 * The website is responsive and tested on all virtual devices available on chrome debugger (for screen sizes)
 * I have also tested on all the modern browsers except Internet Explorer/Edge.
-* The project is hosted here: http://ec2-35-162-94-1.us-west-2.compute.amazonaws.com/
+* The project is hosted here: http://ec2-35-162-94-1.us-west-2.compute.amazonaws.com/ (no longer hosted.. adding to aws fees -_-\* Can rehost if needed)
 
 ### Known issues
 * On Safari and Mobile browsers the flipped card still shows inverted credit element.
